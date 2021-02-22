@@ -20,7 +20,7 @@ class Navbar extends Component {
 
         return ( 
             <>
-                <nav className="navbar navbar-expand-lg sticky-top navbar-light bg-primary text-white p-3 mb-2">
+                <nav className="navbar navbar-expand-lg sticky-top navbar-light bg-primary text-white p-1 mb-2">
                     <div className="container-fluid">
                         <a className="navbar-brand fs-3 fw-bold text-white" href="#">Book <span className="text-warning">Store</span></a>
                         <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -46,8 +46,8 @@ class Navbar extends Component {
                             <ul className="navbar-nav ml-auto">
                                 <li className="nav-item">
                                     <Link className="nav-link active" aria-current="page" to="/cart">
-                                        <div className="rounded bg-white p-2 ">
-                                            <i className="fa fa-lg text-dark fa-shopping-cart" aria-hidden="true"></i>
+                                        <div className="rounded bg-white py-1 px-2 ">
+                                            <i className="fa fa-md text-dark fa-shopping-cart" aria-hidden="true"></i>
                                         </div>
                                     </Link>
                                 </li>

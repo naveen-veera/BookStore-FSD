@@ -21,6 +21,30 @@ class Login extends Component {
         loading : false
     }
 
+
+    // ******************************* Utility Methods ****************************************************
+
+    setAlert = (setter) => {
+            let alertSetting = {
+                isAlertThere : setter.alert,
+                alertMessage : setter.alertMessage,
+                success : setter.success
+            }
+            this.setState({alert : alertSetting});
+
+        return setter;
+    }
+
+    closeAlert = () => {
+        let alertState = {...this.state.alert};
+        alertState.isAlertThere = false;
+        alertState.alertMessage = '';
+        alertState.success = false;
+        this.setState({alert : alertState});
+    }
+
+    // ******************************* Utility Methods End ****************************************************
+
     onChangeHandler = (event) => {
 
         const tempCredentials = {...this.state.credentials};
@@ -35,64 +59,36 @@ class Login extends Component {
         
     }
 
-    closeAlert = () => {
-        let alertState = {...this.state.alert};
-        alertState.isAlertThere = false;
-        alertState.alertMessage = '';
-        alertState.success = false;
-        this.setState({alert : alertState});
-    }
-
     onSubmitHandler = async (event) => {
         event.preventDefault();
-        console.log(this.state.credentials);
         this.setState({loading : true})
 
-        setTimeout(async () => {
-            await axios.post('http://localhost:8080/login', this.state.credentials)
-            .then(res => {
+        await axios.post('http://localhost:8080/login', this.state.credentials)
+        .then(res => {
+            
+            if(res.data) {
+                this.setState({loading : false});
                 this.props.toggleAuth(true, this.state.credentials.email);
-                console.log(res.data);
-                if(res.data) {
-                    this.setState({alert : {
-                            isAlertThere : true,
-                            alertMessage : 'User successfully Logged In',
-                            success : true
-                        },
-                        loading : false
-                    }, () => {
-                        let pathname = this.props.history.location.state.from.pathname;
-                        return <Redirect to={pathname} />
-                        
-                    });
+                this.setAlert({alert : true, alertMessage : "User successfully Logged in", success : true});
+            } else {
+                this.setState({loading : false});
+                this.setAlert({alert : true, alertMessage : "Bad credentials", success : false});
+            }
 
-                } else {
-                    this.setState({alert : {
-                        isAlertThere : true,
-                        alertMessage : 'Incorrect Credentials',
-                        false : true
-                    },
-                    loading : false
-                });
-                }
-            })
-            .catch(err => {
-                console.log(err);
-                this.setState({loading : false})
-            });
-        }, 500)
-
+            
+        })
+        .catch(err => {
+            console.log(err);
+            this.setState({loading : false});
+            this.setAlert({alert : true, alertMessage : "Something went wrong", success : false});
+        });
         
     }
 
     render() {
 
-        const loaderStyle = {
-            width : "10rem",
-            height : "10rem"
-        }
-
-        const loader = <Spinner style={loaderStyle} />
+        
+        const loader = <Spinner />
 
         const form = (
             <div className="container p-4 rounded bg-light shadow border-2 border-primary w-50">
@@ -110,12 +106,6 @@ class Login extends Component {
                         <Link id="singup" className="btn btn-primary mx-1" to="/signup">Signup</Link>
                     </form> 
                 </div>
-        )
-
-        const alreadyAuthenticated = (
-            <div className="container">
-                <h1>Already authenticated</h1>
-            </div>
         )
 
 
