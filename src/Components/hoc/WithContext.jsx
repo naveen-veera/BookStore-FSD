@@ -6,7 +6,7 @@ const WithContext = Component => {
         return (
             <AuthContext.Consumer>
                 {
-                    ({isAuthenticated, toggleAuth, authUsername, logout}) => <Component isAuthenticated={isAuthenticated} logout={logout} authUsername={authUsername} toggleAuth={toggleAuth} />
+                    (value) => <Component {...value} />
                 }
             </AuthContext.Consumer>
         )

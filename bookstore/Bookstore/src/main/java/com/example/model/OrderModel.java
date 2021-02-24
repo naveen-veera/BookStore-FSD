@@ -1,13 +1,8 @@
-
-
 package com.example.model;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 
 import org.hibernate.annotations.GenericGenerator;
 
@@ -15,56 +10,48 @@ import org.hibernate.annotations.GenericGenerator;
 public class OrderModel {
 	
 	@Id
-	@GeneratedValue(generator = "UUID")
-    @GenericGenerator(
-        name = "UUID",
-    strategy = "org.hibernate.id.UUIDGenerator"
-    )
-	String orderId;
-	String dateTime;
+	@GeneratedValue(generator = "uuid")
+	@GenericGenerator(name = "uuid", strategy = "uuid2")
+	String orderId;	
+	String productName;
+	String userId;
+	String price;
+	String quantity;
 	
-	@ManyToOne
-	@JoinColumn
-	UserModel user;
-	
-	String status;
-
 	public String getOrderId() {
 		return orderId;
 	}
-
 	public void setOrderId(String orderId) {
 		this.orderId = orderId;
 	}
-
-	public String getDateTime() {
-		return dateTime;
+	public String getProductName() {
+		return productName;
 	}
-
-	public void setDateTime(String dateTime) {
-		this.dateTime = dateTime;
+	public void setProductName(String productName) {
+		this.productName = productName;
 	}
-
-	public UserModel getUser() {
-		return user;
+	public String getUserId() {
+		return userId;
 	}
-
-	public void setUser(UserModel user) {
-		this.user = user;
+	public void setUserId(String userId) {
+		this.userId = userId;
 	}
-
-	public String getStatus() {
-		return status;
+	public String getPrice() {
+		return price;
 	}
-
-	public void setStatus(String status) {
-		this.status = status;
+	public void setPrice(String price) {
+		this.price = price;
 	}
-
+	public String getQuantity() {
+		return quantity;
+	}
+	public void setQuantity(String quantity) {
+		this.quantity = quantity;
+	}
 	@Override
 	public String toString() {
-		return "OrderModel [orderId=" + orderId + ", dateTime=" + dateTime + ", user=" + user + ", status=" + status
-				+ "]";
+		return "OrderModel [orderId=" + orderId + ", productName=" + productName + ", userId=" + userId + ", price="
+				+ price + ", quantity=" + quantity + "]";
 	}
 	
 	

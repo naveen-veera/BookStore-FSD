@@ -1,6 +1,7 @@
 package com.example.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -8,39 +9,55 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.demo.service.CartService;
-import com.example.model.CartItemModel;
+import com.example.demo.repository.CartRepository;
 import com.example.model.CartModel;
+import com.example.model.ProductModel;
+
 
 @RestController
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class CartController {
 	
 	@Autowired
-	public CartService cartService;
+	public CartRepository cartRepo;
 	
-	@GetMapping("/users/cart/{userId}")
-	public CartModel getCart(@PathVariable String userId) {
-		return cartService.getCartByUserID(userId);
+	@GetMapping("/user/{id}/cartitems")
+	public List<CartModel> getAllCartItemsFromUser(@PathVariable String id) {
+		return cartRepo.findByUserId(id);
 	}
 	
-	@GetMapping("/users/cart/{userId}/items")
-	public List<CartItemModel> getAllCartItems(@PathVariable String userId) {
-		return cartService.getCartItemsFromCart(userId);
+	@PostMapping("/user/addcart")
+	public CartModel addtoCart(@RequestBody CartModel cart) {
+		return cartRepo.save(cart);
 	}
 	
-	@PostMapping("/users/cart/{userId}/items/add")
-	public String addCartItemToCart(@PathVariable String userId, @RequestBody CartItemModel cartItem) {
-		return cartService.addCartItem(userId, cartItem);
+//	@PutMapping("/user/editcart/{id}")
+//	public boolean editCart(@PathVariable String id, @RequestBody CartModel cart) {
+//   	 Optional<ProductModel> tempProduct = productRepo.findById(id);
+//   	 if(tempProduct.isEmpty())
+//   		 return false;
+//   	 else {
+//   		 ProductModel temp = tempProduct.get();
+//   		 temp.setProductName(product.getProductName());
+//   		 temp.setPrice(product.getPrice());
+//   		 temp.setImageUrl(product.getImageUrl());
+//   		 temp.setDescription(product.getDescription());
+//   		 temp.setQuantity(product.getQuantity());
+//   		 return productRepo.save(temp) != null;
+//
+//   	 }
+	
+	@DeleteMapping("/user/deleteCart/{id}")
+	public void deleteCart(@PathVariable String id) {
+		cartRepo.deleteById(id);
 	}
 	
-	@DeleteMapping("/users/cart/{userId}/delete/{cartItemId}")
-	public String deleteCartItem(@PathVariable String userId, @PathVariable String cartItemId) {
-		return cartService.deleteCartItem(userId, cartItemId);
+	@DeleteMapping("/user/deleteallcartitems")
+	public void deleteAll() {
+		cartRepo.deleteAll();
 	}
-	
-	
 }

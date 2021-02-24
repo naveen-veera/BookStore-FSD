@@ -1,17 +1,8 @@
-	package com.example.model;
+package com.example.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.annotation.Generated;
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 
 import org.hibernate.annotations.GenericGenerator;
 
@@ -19,58 +10,48 @@ import org.hibernate.annotations.GenericGenerator;
 public class CartModel {
 	
 	@Id
-	@GeneratedValue(generator = "UUID")
-    @GenericGenerator(
-        name = "UUID",
-    strategy = "org.hibernate.id.UUIDGenerator"
-    )
-	String cartID;
-	@OneToOne(mappedBy = "cart", cascade = {CascadeType.PERSIST ,CascadeType.REMOVE, CascadeType.REFRESH})
-	UserModel user;
-	
-	@OneToMany(mappedBy = "cart", cascade = {CascadeType.PERSIST ,CascadeType.REMOVE, CascadeType.REFRESH})
-	List<CartItemModel> cartItems;
-	
-	public CartModel() {
-		// TODO Auto-generated constructor stub
-		this.user = null;
-		this.cartItems = new ArrayList<>();
+	@GeneratedValue(generator = "uuid")
+	@GenericGenerator(name = "uuid", strategy = "uuid2")
+	String cartId;
+	String productName;
+	String userId;
+	String price;
+	String quantity;
+	public String getCartId() {
+		return cartId;
 	}
-	
-	public CartModel(UserModel user) {
-		this.user = null;
-		this.cartItems = new ArrayList<>();
+	public void setCartId(String cartId) {
+		this.cartId = cartId;
 	}
-
-	public String getCartID() {
-		return cartID;
+	public String getProductName() {
+		return productName;
 	}
-
-	public void setCartID(String cartID) {
-		this.cartID = cartID;
+	public void setProductName(String productName) {
+		this.productName = productName;
 	}
-
-	public UserModel getUser() {
-		return user;
+	public String getUserId() {
+		return userId;
 	}
-
-	public void setUser(UserModel user) {
-		this.user = user;
+	public void setUserId(String userId) {
+		this.userId = userId;
 	}
-
-	public List<CartItemModel> getCartItems() {
-		return cartItems;
+	public String getPrice() {
+		return price;
 	}
-
-	public void setCartItems(List<CartItemModel> cartItems) {
-		this.cartItems = cartItems;
+	public void setPrice(String price) {
+		this.price = price;
 	}
-
+	public String getQuantity() {
+		return quantity;
+	}
+	public void setQuantity(String quantity) {
+		this.quantity = quantity;
+	}
 	@Override
 	public String toString() {
-		return "CartModel [cartID=" + cartID + ", user=" + user + ", cartItems=" + cartItems + "]";
+		return "CartModel [cartId=" + cartId + ", productName=" + productName + ", userId=" + userId + ", price="
+				+ price + ", quantity=" + quantity + "]";
 	}
-	
 	
 	
 }

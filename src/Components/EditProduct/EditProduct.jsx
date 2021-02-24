@@ -1,10 +1,13 @@
-import React, { Component, useState } from 'react';
+import React, { Component, useContext, useEffect, useState } from 'react';
 import axios from "axios";
 import Alert from '../UI/Alert/Alert';
 import Spinner from '../UI/Spinner/Spinner';
 import _ from "lodash";
+import AuthContext from '../Authentication/AuthContext';
 
-const AddProduct = props => {
+const EditProduct = props => {
+
+    const [productId, setProductId] = useState('');
 
     const dummyState = {
         productName : '',
@@ -14,7 +17,9 @@ const AddProduct = props => {
         imageUrl : ''
     }
 
-    const [state, setState] = useState(dummyState)
+    const [state, setState] = useState(dummyState);
+
+    const authContent = useContext(AuthContext);
 
     const onChangeHandler = (e) => {
         const name = e.target.getAttribute('id');
@@ -30,18 +35,32 @@ const AddProduct = props => {
         e.preventDefault();
         const tempState = _.cloneDeep(state);
 
-        axios.post("http://localhost:8080/admin/addproduct", tempState)
+        axios.put("http://localhost:8080/admin/editproduct/" + productId, tempState)
         .then(res => {
             if(res.data) {
-                setState(dummyState);
+                authContent.history.goBack();
             }
         })
     }
 
+    useEffect(() => {
+        const productDetails = authContent.history.location.state.state
+        setState({
+            productName : productDetails.productName,
+            description : productDetails.description,
+            price : productDetails.price,
+            quantity : productDetails.quantity,
+            imageUrl : productDetails.imageUrl
+        });
+
+        setProductId(productDetails.productId);
+    }, []);
+
+
 
     return (
         <div className="container w-50 mb-4">
-            <h1 className="text-center my-4 fs-2" >Add Product</h1>
+            <h1 className="text-center my-4 fs-2" >Edit Product</h1>
             <div className="container border border-3 shadow p-4 rounded"  style={{width : "35rem", height : "auto"}}>
                 <form className="p-3 mx-auto" onSubmit={onSubmitHandler}>
 
@@ -70,7 +89,7 @@ const AddProduct = props => {
                         <input type="text" className="form-control  mb-2" id="imageUrl" placeholder="Enter Image URL" onChange={onChangeHandler} value={state.imageUrl}/>
                     </div>
                     
-                    <button type="submit" className="btn btn-primary">Add Product</button>
+                    <button type="submit" className="btn btn-primary">Save</button>
                 </form>
             </div>
            
@@ -78,4 +97,4 @@ const AddProduct = props => {
     )
 }
 
-export default AddProduct;
+export default EditProduct;

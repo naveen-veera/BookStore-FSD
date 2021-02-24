@@ -1,53 +1,72 @@
-import React, { Component } from "react";
-import AddProduct from "./Components/AddProduct/AddProduct";
-import AuthContext from "./Components/Authentication/AuthContext";
-import Login from "./Components/Login/Login";
-import Navbar from "./Components/Navbar/Navbar";
-import Product from "./Components/Products/Product/Product";
-import Signup from "./Components/Signup/Signup";
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import { BrowserRouter, useHistory } from 'react-router-dom';
+import AuthContext from './Components/Authentication/AuthContext';
+import Navbar from './Components/Navbar/Navbar';
 
+import _ from "lodash";
 
+const App = (props) => {
 
-class App extends Component {
+  const history = useHistory();
 
-  state = {
-    isAuthenticated : false,
-    toggleAuth : (currentAuthStatus, authUser) => {
-      this.setState({isAuthenticated : currentAuthStatus, authUsername : authUser})
-    },
-    logout : () => {
-      this.setState({isAuthenticated : false, authUsername : null});
-      localStorage.setItem('isAuthenticated', false);
-      localStorage.setItem('authUsername', null);
-    },
-    authUsername : null
+  
+
+  const [state, setState] = useState({
+    auth : {
+      username : '',
+      authenticated : false,
+      role : null
+    }
+  })
+
+  useEffect(() => {
+
+    if(localStorage.getItem('authenticated') === null) {
+      localStorage.setItem('username', '');
+      localStorage.setItem('role', null);
+      localStorage.setItem('authenticated', false)
+    } else {
+      let tempState = _.cloneDeep(state);
+      tempState.auth['username'] = localStorage.getItem('username');
+      tempState.auth['authenticated'] = localStorage.getItem('authenticated');
+      tempState.auth['role'] = localStorage.getItem('role');
+      setState(tempState);
+    }
+  }, [])
+
+  const authenticate = (email, role, status = true) => { 
+    let tempState = _.cloneDeep(state);
+    tempState.auth['username'] = email;
+    tempState.auth['authenticated'] = status;
+    tempState.auth['role'] = role;
+
+    localStorage.setItem('username', email);
+    localStorage.setItem('role', role);
+    localStorage.setItem('authenticated', status)
+    setState(tempState);
   }
 
-  componentDidMount() {
+  const logout = () => {
 
-    localStorage.setItem('isAuthenticated', false);
-    localStorage.setItem('authUsername', null);
+    localStorage.clear(['username', 'role', 'authenticated']);
 
-    this.setState({
-      isAuthenticated : localStorage.getItem('isAuthenticated'),
-      authUsername : localStorage.getItem('authUsername')
-    });
-
+    let tempState = _.cloneDeep(state);
+    tempState.auth['username'] = '';
+    tempState.auth['authenticated'] = false;
+    tempState.auth['role'] = null;
+    setState(tempState);
   }
 
-  render() {
 
-    
 
-    return (
-      <>
-        <AuthContext.Provider value={this.state}>
-          <Navbar />
-        </AuthContext.Provider>
-        
-      </>
-    )
-  }
+  return ( 
+    <>
+      <AuthContext.Provider value={{state, setState, history, authenticate, logout }}>
+            <Navbar />
+      </AuthContext.Provider>
+    </>
+   );
 }
-
+ 
 export default App;

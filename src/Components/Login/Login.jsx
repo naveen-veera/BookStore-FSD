@@ -1,130 +1,123 @@
-import React, { Component } from 'react';
-import axios from "axios";
-import Spinner from '../UI/Spinner/Spinner';
-import Alert from '../UI/Alert/Alert';
-import WithContext from '../hoc/WithContext';
-import { Link, Redirect, Router, useHistory, withRouter  } from 'react-router-dom';
+import axios from 'axios';
+import React, { useContext, useEffect, useState } from 'react';
+import { Link, Redirect } from 'react-router-dom';
+import AuthContext from '../Authentication/AuthContext';
 
-class Login extends Component {
+const Login = (props) => {
 
-    state = {
-        credentials : {
-            email : '',
-            password : ''
-        },
-        alert : {
-            isAlertThere : false,
-            alertMessage : '',
-            success : true
-        },
-        isLoggedIn : false,
-        loading : false
+    const authContent = useContext(AuthContext);
+    console.log(authContent)
+    
+
+    const [state, setState] = useState({
+        email : '',
+        password : '',
+        error : 'success'
+    });
+
+    const [emailError, setEmailError] = useState('');
+    const [passwordError, setPasswordError] = useState('');
+
+    if(authContent.state.auth.authenticated) {
+        if(authContent.history.location.state !== undefined)
+            return <Redirect to={authContent.history.location.state.from.pathname} />
+        return <Redirect to="/"/>
     }
 
-
-    // ******************************* Utility Methods ****************************************************
-
-    setAlert = (setter) => {
-            let alertSetting = {
-                isAlertThere : setter.alert,
-                alertMessage : setter.alertMessage,
-                success : setter.success
-            }
-            this.setState({alert : alertSetting});
-
-        return setter;
-    }
-
-    closeAlert = () => {
-        let alertState = {...this.state.alert};
-        alertState.isAlertThere = false;
-        alertState.alertMessage = '';
-        alertState.success = false;
-        this.setState({alert : alertState});
-    }
-
-    // ******************************* Utility Methods End ****************************************************
-
-    onChangeHandler = (event) => {
-
-        const tempCredentials = {...this.state.credentials};
-        const name = event.target.getAttribute('id');
-        const value = event.target.value;
-
-        tempCredentials[name] = value;
-        this.setState({credentials : tempCredentials})
-    }
-
-    componentDidMount() {
-        
-    }
-
-    onSubmitHandler = async (event) => {
-        event.preventDefault();
-        this.setState({loading : true})
-
-        await axios.post('http://localhost:8080/login', this.state.credentials)
-        .then(res => {
-            
-            if(res.data) {
-                this.setState({loading : false});
-                this.props.toggleAuth(true, this.state.credentials.email);
-                this.setAlert({alert : true, alertMessage : "User successfully Logged in", success : true});
-            } else {
-                this.setState({loading : false});
-                this.setAlert({alert : true, alertMessage : "Bad credentials", success : false});
-            }
-
-            
-        })
-        .catch(err => {
-            console.log(err);
-            this.setState({loading : false});
-            this.setAlert({alert : true, alertMessage : "Something went wrong", success : false});
-        });
-        
-    }
-
-    render() {
-
-        
-        const loader = <Spinner />
-
-        const form = (
-            <div className="container p-4 rounded bg-light shadow border-2 border-primary w-50">
-                    <form method="post" onSubmit={this.onSubmitHandler}>
-                        <div className="mb-3">
-                            <label htmlFor="email" className="form-label">Email address</label>
-                            <input type="email" required className="form-control" value={this.state.credentials.email} onChange={this.onChangeHandler} required id="email" aria-describedby="emailHelp"/>
-                            <div id="emailHelp" className="form-text">We'll never share your email with anyone else.</div>
-                        </div>
-                        <div className="mb-3">
-                            <label htmlFor="password" className="form-label">Password</label>
-                            <input type="password" required minLength='3' value={this.state.credentials.password} onChange={this.onChangeHandler} className="form-control" id="password"/>
-                        </div>
-                        <button type="submit" id="submit" className="btn btn-primary mr-2">Login</button>
-                        <Link id="singup" className="btn btn-primary mx-1" to="/signup">Signup</Link>
-                    </form> 
-                </div>
-        )
-
-
-        return (
-            <>
-                <h1 className="p-4 text-center">Login</h1>
-                {
-                    this.state.alert.isAlertThere 
-                    && <Alert 
-                            alertMessage={this.state.alert.alertMessage} 
-                            success={this.state.alert.success}
-                            click={this.closeAlert} 
-                        />
+    const checkValidity = (cb) => {
+        if(authContent.state.auth.username !== state.email || authContent.state.auth.password !== state.password) {
+            setEmailError('Incorrect Credentials');
+            setState(prevState => {
+                return {
+                    ...prevState,
+                    error : true
                 }
-                {this.state.loading ? loader : form }
-                
-            </>
-        );
-    }
-}
+            })
+        } else if(authContent.state.auth.username === state.email || authContent.state.auth.password === state.password) {
+            console.log('Successful');
 
-export default WithContext(withRouter(Login));
+            setEmailError('Login Successful');
+            setState(prevState => {
+                return {
+                    ...prevState,
+                    error : "success"
+                }
+            });
+        }
+        return cb();
+    }
+
+
+    const onSubmitHandler = (e) => {
+        e.preventDefault();
+        const tempState = {...state};
+        // console.log("State", state);
+        // console.log("AuthContext", authContent);
+        axios.post('http://localhost:8080/login', tempState)
+        .then(res => {
+            if(res.data) {
+                authContent.authenticate(res.data.email, res.data.role);
+                authContent.history.push("/")
+            }   
+        }) 
+    }
+
+    const setError = (val) => {
+        setState(prevState => {
+            return {
+                ...prevState,
+                error : val
+            }
+        })
+    }
+
+    const onChangeHandler = (e) => {
+        const name = e.target.getAttribute('id');
+        const value = e.target.value.toString();
+
+        let tempState = {...state};
+        tempState[name] = value;
+        tempState['error'] = true;
+
+        setState(tempState);
+
+        if(name === 'password') {
+            if(value.length < 4) {
+                setPasswordError('weak')
+            } else if(value.length >= 4 && value.length < 8) {
+                setPasswordError('moderate');
+            } else if(value.length >= 8) {
+                setPasswordError('Strong');
+            }
+        }
+        
+    }
+
+
+    return ( 
+        <div className="container w-50">
+            <h1 className="text-center my-5 fs-2" >Login</h1>
+            <div className="container border border-3 shadow p-4 rounded"  style={{width : "35rem", height : "auto"}}>
+                <form className="w-75 mx-auto" onSubmit={onSubmitHandler}>
+                    <div className="form-group my-4">
+                        <label htmlFor="email" className="mb-2">Email address</label>
+                        <input type="email" className="form-control mb-2" id="email" aria-describedby="emailHelp" onChange={onChangeHandler} placeholder="Enter email" value={state.email}/>
+                        <small id="emailhelp" className={`form-text text-${state.error !== '' ? state.error === 'success' ? 'success' : 'danger' : 'muted'}`}>{emailError}</small>
+                    </div>
+                    <div className="form-group mb-3">
+                        <label htmlFor="password" className="mb-2">Password</label>
+                        <input type="password" className="form-control  mb-2" id="password" placeholder="Password" onChange={onChangeHandler} value={state.password}/>
+                        <small id="passwordhelp" className={`form-text text-danger`}>{passwordError}</small>
+                    </div>
+                    
+                    <button type="submit" className="btn btn-primary">Login</button>
+                    <Link className="btn btn-primary m-2" to="/signup" >Signup</Link>
+                </form>
+            </div>
+           
+        </div>
+        
+     );
+}
+ 
+export default Login;

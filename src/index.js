@@ -3,14 +3,13 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import { BrowserRouter } from "react-router-dom";
+import { BrowserRouter, useHistory } from "react-router-dom";
 
-const history = window.history;
 
 ReactDOM.render(
   <React.StrictMode>
-    <BrowserRouter history={history}>
-      <App />
+    <BrowserRouter>
+      <App/>
     </BrowserRouter>
   </React.StrictMode>,
   document.getElementById('root')

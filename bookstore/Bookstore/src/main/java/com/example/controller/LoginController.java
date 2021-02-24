@@ -20,21 +20,4 @@ public class LoginController {
 	@Autowired
 	UserRepository userRepo;
 	
-	@PostMapping("/login")
-	public boolean checkUser(@RequestBody LoginModel data) {
-		System.out.println(data);
-		Optional<UserModel> user = userRepo.findById(data.getEmail());
-		if(user.isEmpty()) {
-			System.out.println("false");
-			return false;
-		}else {
-			if(user.get().getPassword().equals(data.getPassword())) {
-				System.out.println("true");
-				return true;				
-			}else {
-				System.out.println("false");
-				return false;
-			}
-		}
-	}
 }

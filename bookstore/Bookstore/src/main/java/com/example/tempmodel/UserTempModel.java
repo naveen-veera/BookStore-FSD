@@ -2,13 +2,12 @@ package com.example.tempmodel;
 
 public class UserTempModel {
 
-	private String email;
-	private String username;
-	private String mobileNumber;
-	private String password;
-	private String address;
-	private boolean active;
-	private String role;
+	String email;
+	String username;
+	String mobileNumber;
+	String role;
+	String password;
+	String confirmPassword;
 	public String getEmail() {
 		return email;
 	}
@@ -27,34 +26,31 @@ public class UserTempModel {
 	public void setMobileNumber(String mobileNumber) {
 		this.mobileNumber = mobileNumber;
 	}
-	public String getPassword() {
-		return password;
-	}
-	public void setPassword(String password) {
-		this.password = password;
-	}
-	public String getAddress() {
-		return address;
-	}
-	public void setAddress(String address) {
-		this.address = address;
-	}
-	public boolean isActive() {
-		return active;
-	}
-	public void setActive(boolean active) {
-		this.active = active;
-	}
 	public String getRole() {
 		return role;
 	}
 	public void setRole(String role) {
 		this.role = role;
 	}
+	public String getPassword() {
+		return password;
+	}
+	public void setPassword(String password) {
+		this.password = password;
+	}
+	public String getConfirmPassword() {
+		return confirmPassword;
+	}
+	public void setConfirmPassword(String confirmPassword) {
+		this.confirmPassword = confirmPassword;
+	}
+	
 	@Override
 	public String toString() {
-		return "UserTempModel [email=" + email + ", username=" + username + ", mobileNumber=" + mobileNumber
-				+ ", password=" + password + ", address=" + address + ", active=" + active + ", role=" + role + "]";
+		return "UserTempModel [email=" + email + ", username=" + username + ", mobileNumber=" + mobileNumber + ", role="
+				+ role + ", password=" + password + ", confirmPassword=" + confirmPassword + "]";
 	}
+	
+	
 	
 }
