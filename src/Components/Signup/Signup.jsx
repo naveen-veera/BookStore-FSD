@@ -216,9 +216,12 @@ const Signup = () => {
         .then(res => {
             if(res.data) {
                 console.log(res.data);
+                authContent.notify('User Successfully signed up', 'success');
                 authContent.authenticate(res.data.email, res.data.role);
                 authContent.history.push("/")
-            }   
+            }   else {
+                authContent.notify('Something went wrong', 'error');
+            } 
         }) 
               
     }
@@ -278,7 +281,7 @@ const Signup = () => {
 
                     <div className="form-group my-4">
                         <label htmlFor="username" className="mb-2">Username</label>
-                        <input type="email" className="form-control mb-2" id="username" required aria-describedby="emailHelp" onChange={onChangeHandler} placeholder="Enter Username" value={state.username}/>
+                        <input type="text" className="form-control mb-2" id="username" required aria-describedby="emailHelp" onChange={onChangeHandler} placeholder="Enter Username" value={state.username}/>
                     </div>
 
                     <div className="form-group my-4">

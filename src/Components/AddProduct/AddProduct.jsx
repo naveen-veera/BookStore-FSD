@@ -1,8 +1,9 @@
-import React, { Component, useState } from 'react';
+import React, { Component, useContext, useState } from 'react';
 import axios from "axios";
 import Alert from '../UI/Alert/Alert';
 import Spinner from '../UI/Spinner/Spinner';
 import _ from "lodash";
+import AuthContext from '../Authentication/AuthContext';
 
 const AddProduct = props => {
 
@@ -14,7 +15,9 @@ const AddProduct = props => {
         imageUrl : ''
     }
 
-    const [state, setState] = useState(dummyState)
+    const [state, setState] = useState(dummyState);
+
+    const authContent = useContext(AuthContext);
 
     const onChangeHandler = (e) => {
         const name = e.target.getAttribute('id');
@@ -33,7 +36,10 @@ const AddProduct = props => {
         axios.post("http://localhost:8080/admin/addproduct", tempState)
         .then(res => {
             if(res.data) {
+                authContent.notify('Product added Successfully', 'success');
                 setState(dummyState);
+            } else {
+                authContent.notify('Something went wrong', 'error');
             }
         })
     }

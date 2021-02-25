@@ -26,6 +26,7 @@ const Orders = (props) => {
     const clearAll = () => {
         axios.delete(`http://localhost:8080/user/deleteall`)
         .then(res => {
+            authContent.notify('Order history cleared', 'success');
             setRefresh(prevState => !prevState);
         })
     }

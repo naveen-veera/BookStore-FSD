@@ -5,9 +5,12 @@ import AuthContext from './Components/Authentication/AuthContext';
 import Navbar from './Components/Navbar/Navbar';
 
 import _ from "lodash";
+import { toast } from 'react-toastify';
+import "react-toastify/dist/ReactToastify.css";
 
 const App = (props) => {
 
+  toast.configure();
   const history = useHistory();
 
   
@@ -56,13 +59,41 @@ const App = (props) => {
     tempState.auth['authenticated'] = false;
     tempState.auth['role'] = null;
     setState(tempState);
+    notify('Logged out');
   }
 
-
+  const notify = (message, status) => {
+    if(status === 'success') {
+      toast.success(message, {
+        position: toast.POSITION.TOP_RIGHT,
+        autoClose : 3000
+      })
+    } else if(status === 'warn') {
+      toast.warn(message, {
+        position: toast.POSITION.TOP_RIGHT,
+        autoClose : 3000
+      })
+    } else if(status === 'error') {
+      toast.error(message, {
+        position: toast.POSITION.TOP_RIGHT,
+        autoClose : 3000
+      })
+    } else if(status === 'dark') {
+      toast.dark(message, {
+        position: toast.POSITION.TOP_RIGHT,
+        autoClose : 3000
+      })
+    } else {
+      toast(message, {
+        position: toast.POSITION.TOP_RIGHT,
+        autoClose : 3000
+      })
+    }
+  }
 
   return ( 
     <>
-      <AuthContext.Provider value={{state, setState, history, authenticate, logout }}>
+      <AuthContext.Provider value={{state, setState, history, authenticate, logout, notify }}>
             <Navbar />
       </AuthContext.Provider>
     </>

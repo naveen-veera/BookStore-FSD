@@ -2,6 +2,8 @@ import axios from 'axios';
 import React, { useContext, useEffect, useState } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import AuthContext from '../Authentication/AuthContext';
+import { toast } from "react-toastify"
+import "react-toastify/dist/ReactToastify.css";
 
 const Login = (props) => {
 
@@ -35,7 +37,7 @@ const Login = (props) => {
             })
         } else if(authContent.state.auth.username === state.email || authContent.state.auth.password === state.password) {
             console.log('Successful');
-
+            authContent.notify('Login Successful', 'success');
             setEmailError('Login Successful');
             setState(prevState => {
                 return {
@@ -44,7 +46,6 @@ const Login = (props) => {
                 }
             });
         }
-        return cb();
     }
 
 
@@ -57,9 +58,15 @@ const Login = (props) => {
         .then(res => {
             if(res.data) {
                 authContent.authenticate(res.data.email, res.data.role);
+                authContent.notify('Login Successful', 'success');
                 authContent.history.push("/")
-            }   
-        }) 
+            }  else {
+                authContent.notify('Bad Credenetials', 'error');
+            }
+        })
+        .catch(err => {
+            authContent.notify('Something went wrong', 'error');
+        });
     }
 
     const setError = (val) => {

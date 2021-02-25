@@ -38,7 +38,10 @@ const EditProduct = props => {
         axios.put("http://localhost:8080/admin/editproduct/" + productId, tempState)
         .then(res => {
             if(res.data) {
+                authContent.notify('Product Edited Successfully', 'success');
                 authContent.history.goBack();
+            } else {
+                authContent.notify('Something went wrong', 'success'); 
             }
         })
     }
