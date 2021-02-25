@@ -1,4 +1,4 @@
-import React, { Component, useContext } from 'react';
+import React, { Component, useContext, useEffect } from 'react';
 import { Link, Route, Router, Switch, useHistory } from 'react-router-dom';
 import AddProduct from '../AddProduct/AddProduct';
 import AuthContext from '../Authentication/AuthContext';
@@ -17,6 +17,10 @@ const Navbar = (props) => {
 
     const authContent = useContext(AuthContext);
     console.log(authContent);
+
+    useEffect(() => {
+        console.log("use effect nav");
+    })
 
     return ( 
         <>
@@ -42,7 +46,7 @@ const Navbar = (props) => {
                         <div className="collapse navbar-collapse d-flex justify-content-end" id="navbarNav">
                             <ul className="navbar-nav">
                                 <li className="nav-item mx-1 mt-1">
-                                    <Link className="nav-link text-white active" onClick={authContent.state.auth.authenticated ? authContent.logout : () => null} to="/login">{authContent.state.auth.authenticated ? 'Logout' : 'Login' }</Link>
+                                    <Link className="nav-link text-white active" onClick={props.isAuthed ? authContent.logout : () => null} to="/login">{props.isAuthed ? 'Logout' : 'Login' }</Link>
                                 </li>
                                 <li className="nav-item mx-1 mt-1">
                                     {(authContent.state.auth.role === 'USER' || authContent.state.auth.role === 'ADMIN')&& <Link className="nav-link text-white active" to="/orders">Orders</Link>}

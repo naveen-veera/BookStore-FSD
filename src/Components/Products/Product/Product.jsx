@@ -2,7 +2,7 @@ import axios from 'axios';
 import React, { Component, useContext, useEffect, useState } from 'react';
 import { Link, Redirect, withRouter } from 'react-router-dom';
 import AuthContext from '../../Authentication/AuthContext';
-
+import "../../../App.css"
 
 const Product = (props) => {
 
@@ -10,7 +10,7 @@ const Product = (props) => {
 
 
     return ( 
-        <div className="rounded bg-light mx-2 my-2 px-2 py-3 card w-25 shadow border-3 border-light">
+        <div className=" mx-2 my-2 px-2 py-3 card w-25 shadow border-3 border-light bg-1-layout">
             <div className="card-body">
                 <img src={props.url} class="card-img-top mb-2 rounded" style={{width:"20rem", height:"15rem"}} alt="..."/>
                 <h2 className="card-title mb-2">{props.productName}</h2>

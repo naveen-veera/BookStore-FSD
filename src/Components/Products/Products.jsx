@@ -5,6 +5,7 @@ import AuthContext from '../Authentication/AuthContext';
 import EditProduct from '../EditProduct/EditProduct';
 import Spinner from '../UI/Spinner/Spinner';
 import Product from './Product/Product';
+import "../../App.css"
 
 const Products = props => {
     const [state, setState] = useState({
@@ -34,7 +35,8 @@ const Products = props => {
         axios.post("http://localhost:8080/user/addcart", cartItem)
         .then(res => {
             if(res.data) {
-                authContent.notify(`Product ${<b>{cartItem.productName}</b>} successfully added to cart`, 'success')
+                console.log("Product add", product);
+                authContent.notify(`Product ${product.productName} successfully added to cart`, 'success')
                 // authContent.history.push("/cart")
             } else {
                 authContent.notify('Someting went wrong', 'error')
@@ -47,6 +49,7 @@ const Products = props => {
     const onDeleteProduct = product => {
         axios.delete("http://localhost:8080/admin/deleteProduct/" + product.productId)
         .then(res => {
+            console.log("Product ",);
             authContent.notify(`Product ${product.productName} successfully deleted`, 'success')
             setRefresh(prevState => {
                 return !prevState
@@ -81,32 +84,6 @@ const Products = props => {
 
     return (
             <>
-                <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
-                    <ol class="carousel-indicators">
-                        <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-                        <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-                        <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
-                    </ol>
-                    <div class="carousel-inner">
-                        <div class="carousel-item active">
-                        <img src="https://images.pexels.com/photos/1560093/pexels-photo-1560093.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500" class="d-block w-100" alt="..."/>
-                        </div>
-                        <div class="carousel-item">
-                        <img src="http://trumpwallpapers.com/wp-content/uploads/Book-Wallpaper-01-2716-x-1810.jpg" class="d-block w-100" alt="..."/>
-                        </div>
-                        <div class="carousel-item">
-                        <img src="..." class="d-block w-100" alt="..."/>
-                        </div>
-                    </div>
-                    <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span class="sr-only">Previous</span>
-                    </a>
-                    <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span class="sr-only">Next</span>
-                    </a>
-                </div>
             <div className="container-fluid d-flex pt-2"> 
                 {state.products.length < 1 ? <h2 className="text-center mx-auto my-5">No Products to Display</h2> : productsList}
             </div> 

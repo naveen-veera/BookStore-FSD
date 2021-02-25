@@ -19,22 +19,29 @@ const App = (props) => {
     auth : {
       username : '',
       authenticated : false,
-      role : null
+      role : ''
     }
   })
 
   useEffect(() => {
 
     if(localStorage.getItem('authenticated') === null) {
+      console.log("Inside first loop");
       localStorage.setItem('username', '');
-      localStorage.setItem('role', null);
+      localStorage.setItem('role', '');
       localStorage.setItem('authenticated', false)
     } else {
-      let tempState = _.cloneDeep(state);
-      tempState.auth['username'] = localStorage.getItem('username');
-      tempState.auth['authenticated'] = localStorage.getItem('authenticated');
-      tempState.auth['role'] = localStorage.getItem('role');
-      setState(tempState);
+      console.log("Inside sec loop");
+      if(( localStorage.getItem('authenticated') === 'true' ) == true) {
+        setState({
+          auth : {
+            username : localStorage.getItem('username'),
+            authenticated : localStorage.getItem('authenticated') === 'true',
+            role : localStorage.getItem('role')
+          }
+        })
+      }
+      console.log(`role : ${localStorage.getItem('role')}\n username : ${localStorage.getItem('username')} \n Auth : ${localStorage.getItem('authenticated')}`);
     }
   }, [])
 
@@ -94,7 +101,7 @@ const App = (props) => {
   return ( 
     <>
       <AuthContext.Provider value={{state, setState, history, authenticate, logout, notify }}>
-            <Navbar />
+            <Navbar isAuthed={state.auth.authenticated} />
       </AuthContext.Provider>
     </>
    );
