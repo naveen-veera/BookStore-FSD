@@ -4,6 +4,7 @@ import Alert from '../UI/Alert/Alert';
 import Spinner from '../UI/Spinner/Spinner';
 import _ from "lodash";
 import AuthContext from '../Authentication/AuthContext';
+import { Redirect } from 'react-router-dom';
 
 const EditProduct = props => {
 
@@ -47,16 +48,30 @@ const EditProduct = props => {
     }
 
     useEffect(() => {
-        const productDetails = authContent.history.location.state.state
-        setState({
-            productName : productDetails.productName,
-            description : productDetails.description,
-            price : productDetails.price,
-            quantity : productDetails.quantity,
-            imageUrl : productDetails.imageUrl
-        });
 
-        setProductId(productDetails.productId);
+        if(authContent.state.auth.role !== 'ADMIN') {
+            authContent.notify("Restricted Access", "error");
+            authContent.history.push("/");
+        }
+        
+        if(authContent.history.location.state === undefined) {
+            return <Redirect to="/" />
+        } else {
+            
+            const productDetails = authContent.history.location.state.state;
+        
+            setState({
+                productName : productDetails.productName,
+                description : productDetails.description,
+                price : productDetails.price,
+                quantity : productDetails.quantity,
+                imageUrl : productDetails.imageUrl
+            });
+
+            setProductId(productDetails.productId);
+        }
+
+        
     }, []);
 
 
@@ -64,7 +79,7 @@ const EditProduct = props => {
     return (
         <div className="container w-50 mb-4">
             <h1 className="text-center my-4 fs-2" >Edit Product</h1>
-            <div className="container border border-3 shadow p-4 rounded"  style={{width : "35rem", height : "auto"}}>
+            <div className="container border border-3 shadow p-4 rounded"  style={{width : "35rem", height : "auto", borderRadius : '10px', backgroundColor : "#cc9f9f", opacity : "0.9"}}>
                 <form className="p-3 mx-auto" onSubmit={onSubmitHandler}>
 
                     <div className="form-group mb-2 mt-4">

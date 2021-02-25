@@ -19,6 +19,10 @@ public class ProductModel {
 	String imageUrl;
 	String quantity;
 	
+	public ProductModel() {
+		// TODO Auto-generated constructor stub
+	}
+	
 	public String getProductId() {
 		return productId;
 	}

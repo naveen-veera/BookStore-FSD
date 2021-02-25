@@ -48,7 +48,7 @@ const AddProduct = props => {
     return (
         <div className="container w-50 mb-4">
             <h1 className="text-center my-4 fs-2" >Add Product</h1>
-            <div className="container border border-3 shadow p-4 rounded"  style={{width : "35rem", height : "auto"}}>
+            <div className="container border border-3 shadow p-4 rounded"  style={{width : "35rem", height : "auto", borderRadius : '10px', backgroundColor : "#cc9f9f", opacity : "0.9"}}>
                 <form className="p-3 mx-auto" onSubmit={onSubmitHandler}>
 
                     <div className="form-group mb-2 mt-4">

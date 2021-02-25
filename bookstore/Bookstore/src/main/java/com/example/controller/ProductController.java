@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.repository.ProductRepository;
 import com.example.model.ProductModel;
+import com.example.service.ProductService;
 
 
  
@@ -26,39 +27,28 @@ import com.example.model.ProductModel;
 @CrossOrigin(origins = "*")
 public class ProductController {
 
+		
 	@Autowired
-    public ProductRepository productRepo;
+	public ProductService productService;
         
      @GetMapping("/products")
      public List<ProductModel> getAllProducts() {
-    	 return productRepo.findAll();
+    	 return productService.getAllProducts();
      }
         
      @PostMapping("admin/addproduct")
      public boolean addProduct(@RequestBody ProductModel product) {
-    	 return productRepo.save(product) != null;
+    	 return productService.addProduct(product);
      }
      
      @PutMapping("/admin/editproduct/{id}")
      public boolean editProduct(@PathVariable String id, @RequestBody ProductModel product) {
-    	 Optional<ProductModel> tempProduct = productRepo.findById(id);
-    	 if(tempProduct.isEmpty())
-    		 return false;
-    	 else {
-    		 ProductModel temp = tempProduct.get();
-    		 temp.setProductName(product.getProductName());
-    		 temp.setPrice(product.getPrice());
-    		 temp.setImageUrl(product.getImageUrl());
-    		 temp.setDescription(product.getDescription());
-    		 temp.setQuantity(product.getQuantity());
-    		 return productRepo.save(temp) != null;
-
-    	 }
+    	 return productService.editProduct(id, product);
      }
      
      @DeleteMapping("/admin/deleteProduct/{id}")
-     public void deleteProduct(@PathVariable String id) {
-    	 productRepo.deleteById(id);
+     public boolean deleteProduct(@PathVariable String id) {
+    	 return productService.deleteProduct(id);
      }
      
      

@@ -25,21 +25,31 @@ const Products = props => {
     })
 
     const onAddToCart = product => () => {
+
+        if(!authContent.state.auth.authenticated) {
+            authContent.notify(`Please Log in`, 'warn');
+            authContent.history.push("/login", {from : authContent.history.location.pathname});
+            return;
+        }
+        console.log("add Cart ", product);
+
         let cartItem = {
+            cartId : product.productId,
             productName : product.productName,
             price : product.price,
-            quantity : product.quantity,
+            quantity : 1,
             userId : authContent.state.auth.username
         }
 
         axios.post("http://localhost:8080/user/addcart", cartItem)
         .then(res => {
-            if(res.data) {
+            if(res.data == 'success') {
                 console.log("Product add", product);
                 authContent.notify(`Product ${product.productName} successfully added to cart`, 'success')
                 // authContent.history.push("/cart")
-            } else {
-                authContent.notify('Someting went wrong', 'error')
+            } else if('insufficient stock') {
+                authContent.notify(`Product ${product.productName} out of stock`, 'warn');
+                setRefresh(prevStste => !prevStste);
             }
             
         })

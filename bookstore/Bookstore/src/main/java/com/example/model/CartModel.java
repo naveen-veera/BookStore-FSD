@@ -10,13 +10,26 @@ import org.hibernate.annotations.GenericGenerator;
 public class CartModel {
 	
 	@Id
-	@GeneratedValue(generator = "uuid")
-	@GenericGenerator(name = "uuid", strategy = "uuid2")
+//	@GeneratedValue(generator = "uuid")
+//	@GenericGenerator(name = "uuid", strategy = "uuid2")
 	String cartId;
 	String productName;
 	String userId;
 	String price;
 	String quantity;
+	
+	public CartModel() {
+		// TODO Auto-generated constructor stub
+	}
+	
+	public CartModel(String productName, String userId, String price, String quantity) {
+		this.productName = productName;
+		this.userId = userId;
+		this.price = price;
+		this.quantity = quantity;
+	}
+	
+	
 	public String getCartId() {
 		return cartId;
 	}
