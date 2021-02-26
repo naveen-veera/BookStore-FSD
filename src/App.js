@@ -101,7 +101,7 @@ const App = (props) => {
   return ( 
     <>
       <AuthContext.Provider value={{state, setState, history, authenticate, logout, notify }}>
-            <Navbar isAuthed={state.auth.authenticated} />
+            <Navbar/>
       </AuthContext.Provider>
     </>
    );
