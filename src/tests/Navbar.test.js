@@ -33,8 +33,7 @@ describe('Testing ADMIN', () => {
             }         
         }
 
-        const { container, getByTestId, debug } = renderWithContext(stateVal);
-
+        const { container, getByTestId, debug } = renderWithContext(stateVal); 
         expect(container).toBeInTheDocument();
         expect(screen.getByText('Logout')).toBeTruthy();
         expect(getByTestId('addproduct')).toBeTruthy();

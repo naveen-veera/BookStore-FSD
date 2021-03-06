@@ -108,17 +108,17 @@ const Login = (props) => {
                 <form className="w-75 mx-auto" onSubmit={onSubmitHandler}>
                     <div className="form-group my-4">
                         <label htmlFor="email" className="mb-2">Email address</label>
-                        <input type="email" className="form-control mb-2" id="email" aria-describedby="emailHelp" onChange={onChangeHandler} placeholder="Enter email" value={state.email}/>
+                        <input type="email" data-testid="email" className="form-control mb-2" id="email" aria-describedby="emailHelp" onChange={onChangeHandler} placeholder="Enter email" value={state.email}/>
                         <small id="emailhelp" className={`form-text text-${state.error !== '' ? state.error === 'success' ? 'success' : 'danger' : 'muted'}`}>{emailError}</small>
                     </div>
                     <div className="form-group mb-3">
                         <label htmlFor="password" className="mb-2">Password</label>
-                        <input type="password" className="form-control  mb-2" id="password" placeholder="Password" onChange={onChangeHandler} value={state.password}/>
+                        <input type="password" data-testid="password" className="form-control  mb-2" id="password" placeholder="Password" onChange={onChangeHandler} value={state.password}/>
                         <small id="passwordhelp" className={`form-text text-danger`}>{passwordError}</small>
                     </div>
                     
-                    <button type="submit" className="btn btn-primary">Login</button>
-                    <Link className="btn btn-primary m-2" to="/signup" >Signup</Link>
+                    <button type="submit" data-testid="login" className="btn btn-primary">Login</button>
+                    <Link data-testid="signup" className="btn btn-primary m-2" to="/signup" >Signup</Link>
                 </form>
             </div>
            

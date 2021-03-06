@@ -83,7 +83,7 @@ const Cart = (props) => {
                             }
                         </tbody>
                     </table>
-                    <button className="btn btn-primary mt-3" onClick={addOrder}>Place order</button>
+                    <button data-testid="placeorder" className="btn btn-primary mt-3" onClick={addOrder}>Place order</button>
                     <div style={{height : "30px"}}></div>
                 </div>
             </div>
