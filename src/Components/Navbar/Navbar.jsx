@@ -69,7 +69,7 @@ const Navbar = (props) => {
                     <Route exact path="/" {...props} component={() => <Products {...props}/>}/>
                     <Route path="/login" render={() => <Login />} /> 
                     <Route path="/signup" render={() => <Signup />} />                
-                    <PrivateRoute path="/editproduct" component={() => <EditProduct />} />
+                    <PrivateRoute path="/editProduct" component={() => <EditProduct />} />
                     <PrivateRoute path="/cart" component={() => <Cart />} />
                     <PrivateRoute exact path="/addproduct" component={() => <AddProduct />} />
                     <PrivateRoute exact path="/orders" component={() => <Orders />} />

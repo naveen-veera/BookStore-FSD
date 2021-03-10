@@ -59,7 +59,7 @@ describe('Testing ADMIN', () => {
         cleanup();
     })
 
-    test('Render Not Logged In', () => {
+    test('fe_d1_testcase7', () => {
 
         const stateVal = {
             state : {

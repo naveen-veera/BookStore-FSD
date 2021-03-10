@@ -48,7 +48,7 @@ const userVal = {
 afterEach(cleanup);
 
 
-test('render Product', () => {
+test('fe_d1_testcase9', () => {
   const { container, debug } = renderWithContext(userVal);
   expect(container).toBeInTheDocument();
 //   debug();
@@ -59,14 +59,14 @@ test('render Product', () => {
   
 });
 
-test('Render User Product', () => {
+test('fe_d1_testcase10', () => {
     const { container, debug } = renderWithContext(userVal);
     expect(screen.getByText('Cart')).toBeTruthy();
     expect(screen.queryByText('Edit')).toBeFalsy();
     expect(screen.queryByText('Delete')).toBeFalsy();
 })
 
-test('Render Admin Product', () => {
+test('fe_d1_testcase11', () => {
     const { container, debug } = renderWithContext(adminVal);
     expect(screen.queryByText('Edit')).toBeTruthy();
     expect(screen.queryByText('Delete')).toBeTruthy();

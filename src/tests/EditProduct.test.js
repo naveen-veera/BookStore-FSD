@@ -49,7 +49,7 @@ describe('Testing AddProduct Component', () => {
         )
     }
 
-    test('AddProduct fields' , () => {
+    test('fe_d1_testcase4' , () => {
         const { container, debug } = renderWithContext(userRole);
 
         expect(screen.queryByTestId('editproduct')).toBeTruthy();
@@ -60,7 +60,7 @@ describe('Testing AddProduct Component', () => {
         expect(screen.queryByTestId('productName')).toBeTruthy();
     })
 
-    test('AddProduct Test field values' , () => {
+    test('fe_d1_testcase5' , () => {
         const { container, debug } = renderWithContext(userRole);
 
         expect(screen.queryByTestId('imageUrl').value).toBe('Test URL');

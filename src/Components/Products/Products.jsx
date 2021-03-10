@@ -68,7 +68,7 @@ const Products = props => {
     }
 
    const onEditProduct = product => {
-        authContent.history.push("/editproduct", {state : product});
+        authContent.history.push("/editProduct", {state : product});
     }
 
     const productsList = state.products.map( product => {
@@ -94,7 +94,7 @@ const Products = props => {
 
     return (
             <>
-            <div className="container-fluid d-flex pt-2"> 
+            <div className="container-fluid d-flex flex-wrap pt-2"> 
                 {state.products.length < 1 ? <h2 className="text-center mx-auto my-5">No Products to Display</h2> : productsList}
             </div> 
             </>

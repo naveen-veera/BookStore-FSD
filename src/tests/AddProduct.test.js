@@ -18,7 +18,7 @@ describe('Testing AddProduct Component', () => {
         )
     }
 
-    test('AddProduct fields' , () => {
+    test('fe_d1_testcase1' , () => {
         const { container, debug } = renderWithContext({});
 
         expect(screen.queryByTestId('addproduct')).toBeTruthy();

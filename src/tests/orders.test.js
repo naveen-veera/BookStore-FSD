@@ -43,7 +43,7 @@ describe('Test Login Component', () => {
         )
     }
 
-    test('Test Login Component', () => {
+    test('fe_d1_testcase8', () => {
         const { container, debug } = renderWithContext(authValue);
 
         expect(container).toBeTruthy();

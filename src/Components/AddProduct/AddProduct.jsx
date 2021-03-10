@@ -33,7 +33,7 @@ const AddProduct = props => {
         e.preventDefault();
         const tempState = _.cloneDeep(state);
 
-        axios.post("http://localhost:8080/admin/addproduct", tempState)
+        axios.post("http://localhost:8080/admin/addProduct", tempState)
         .then(res => {
             if(res.data) {
                 authContent.notify('Product added Successfully', 'success');

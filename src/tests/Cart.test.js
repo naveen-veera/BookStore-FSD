@@ -43,7 +43,7 @@ describe('Test Cart Component', () => {
         )
     }
 
-    test('Test Cart Component', () => {
+    test('fe_d1_testcase3', () => {
         const { container, debug } = renderWithContext(authValue);
 
         expect(screen.findByTestId('placeorder')).toBeTruthy();

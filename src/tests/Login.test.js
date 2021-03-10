@@ -27,7 +27,7 @@ describe('Test Login Component', () => {
         )
     }
 
-    test('Test Login Component', () => {
+    test('fe_d1_testcase6', () => {
         const { container, debug } = renderWithContext(stateContextVal);
         
         const inputEl = screen.getByTestId('email');

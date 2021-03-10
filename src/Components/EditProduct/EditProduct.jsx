@@ -36,7 +36,7 @@ const EditProduct = props => {
         e.preventDefault();
         const tempState = _.cloneDeep(state);
 
-        axios.put("http://localhost:8080/admin/editproduct/" + productId, tempState)
+        axios.put("http://localhost:8080/admin/editProduct/" + productId, tempState)
         .then(res => {
             if(res.data) {
                 authContent.notify('Product Edited Successfully', 'success');
