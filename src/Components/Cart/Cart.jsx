@@ -15,43 +15,43 @@ const Cart = (props) => {
 
     const credentials = authContent.state.auth;
 
-    const removeItem = productId => {
-        axios.delete(`http://localhost:8080/user/deleteCart/${productId}/`)
-        .then(res => {
-            setRefresh(prevState => !prevState);
-        })
-    }
+    const removeItem = productId => { }
+    //     axios.delete(`http://localhost:8080/user/deleteCart/${productId}/`)
+    //     .then(res => {
+    //         setRefresh(prevState => !prevState);
+    //     })
+    // }
 
-    const addOrder =  () => {
+    const addOrder =  () => { }
         
-        const tempCartItems = _.cloneDeep(state.cartItems)
+    //     const tempCartItems = _.cloneDeep(state.cartItems)
 
-        tempCartItems.map(item => {
-            item.orderId = item.cartId;
-            delete item.cartId;
-            return item;
-        })
+    //     tempCartItems.map(item => {
+    //         item.orderId = item.cartId;
+    //         delete item.cartId;
+    //         return item;
+    //     })
 
-        axios.post(`http://localhost:8080/user/addorder`, tempCartItems )
-        .then(res => {
-             return;
-        })
-        axios.delete(`http://localhost:8080/user/deleteallcartitems`)
-                .then(res => {
-                    authContent.history.push("/orders");
-                    setRefresh(prevState => !prevState)
-                })
-    }
+    //     axios.post(`http://localhost:8080/user/addorder`, tempCartItems )
+    //     .then(res => {
+    //          return;
+    //     })
+    //     axios.delete(`http://localhost:8080/user/deleteallcartitems`)
+    //     .then(res => {
+    //         authContent.history.push("/orders");
+    //         setRefresh(prevState => !prevState)
+    //     })
+    // }
 
     useEffect(() => {
-        axios.get(`http://localhost:8080/user/${credentials.username}/cartitems`)
-        .then(res => {
-            if(res.data) {
-                setState({
-                    cartItems : res.data
-                })
-            }
-        })
+        // axios.get(`http://localhost:8080/user/${credentials.username}/cartitems`)
+        // .then(res => {
+        //     if(res.data) {
+        //         setState({
+        //             cartItems : res.data
+        //         })
+        //     }
+        // })
     });
 
     return (
